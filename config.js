@@ -4,7 +4,7 @@
 
 const CONFIG = {
     // Your Valentine's name
-    valentineName: "Khadija",
+    valentineName: "Krystell",
 
     // Browser tab title
     pageTitle: "Will You Be My Valentine, Krystell? 💝",
