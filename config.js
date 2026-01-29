@@ -4,10 +4,10 @@
 
 const CONFIG = {
     // Your Valentine's name
-    valentineName: "Krystell",
+    valentineName: "Khadija",
 
     // Browser tab title
-    pageTitle: "Will You Be My Valentine, Krystell? 💝",
+    pageTitle: "Will You Be My Valentine, Khadija? 💝",
 
     // Countdown to Valentine's Day 2026
     countdown: {
@@ -108,7 +108,7 @@ const CONFIG = {
         title: "A Letter For You 💌",
         instruction: "Hover over the words to reveal my message...",
         content: [
-            "My dearest Krystell,",
+            "My dearest Khadija,",
             "From the moment I met you, my world became brighter and full of color.",
             "Your smile lights up my darkest days and your presence makes everything better.",
             "Your laugh is my favorite melody, a sound I never want to stop hearing.",
