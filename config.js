@@ -1,96 +1,167 @@
 // ============================================
-// 💝 CUSTOMIZE YOUR VALENTINE'S WEBSITE HERE 💝
+// 💝 KHADIJA'S CUSTOM VALENTINE'S WEBSITE 💝
 // ============================================
 
 const CONFIG = {
-    // Your Valentine's name that will appear in the title
-    // Example: "Jade", "Sarah", "Mike"
+    // Your Valentine's name
     valentineName: "Khadija",
 
-    // The title that appears in the browser tab
-    // You can use emojis! 💝 💖 💗 💓 💞 💕
-    pageTitle: "Will You Be My Valentine? 💝",
+    // Browser tab title
+    pageTitle: "Will You Be My Valentine, Krystell? 💝",
 
-    // Floating emojis that appear in the background
-    // Find more emojis at: https://emojipedia.org
-    floatingEmojis: {
-        hearts: ['❤️', '💖', '💝', '💗', '💓'],  // Heart emojis
-        bears: ['🧸', '🐻']                       // Cute bear emojis
+    // Countdown to Valentine's Day 2026
+    countdown: {
+        enabled: true,
+        targetDate: "2026-02-14T00:00:00", // February 14, 2026
+        title: "Time Until Valentine's Day 2026",
+        message: "Days until I can celebrate our love"
     },
 
-    // Questions and answers
-    // Customize each question and its possible responses
+    // Cat images for decorations (your uploaded cute cats)
+    // IMPORTANT: Rename your images to cat1.jpeg, cat2.jpeg, cat3.jpeg, cat4.jpeg
+    // OR update these paths to match your actual image filenames
+    images: {
+        cat1: "cat1.jpeg", // Pink cat
+        cat2: "cat2.jpeg", // Blue cat with flowers
+        cat3: "cat3.jpeg", // Blue cat with mustache
+        cat4: "cat4.jpeg"  // Gradient cat
+    },
+
+    // Floating background - minimal, just soft hearts
+    floatingEmojis: {
+        hearts: ['💝', '💗', '💕'],  // Soft pink hearts only
+        bears: []  // No bears, keeping it minimal
+    },
+
+    // Questions flow
     questions: {
         first: {
-            text: "Do you like me?",                                    // First interaction
-            yesBtn: "Yes",                                             // Text for "Yes" button
-            noBtn: "No",                                               // Text for "No" button
-            secretAnswer: "I don't like you, I love you! ❤️"           // Secret hover message
-        },
-        second:{
-            text: "Are you a Batata?",
-            yesBtn: "Yes"",
+            text: "Do you like me?",
+            yesBtn: "Yes",
             noBtn: "No",
-            secretAnswer: "I am YOUR Batata!!"
-
+            secretAnswer: "I don't like you, I love you! ❤️"
         },
-        second: {
-            text: "How much do you love me?",                          // For the love meter
-            startText: "This much!",                                   // Text before the percentage
-            nextBtn: "Next ❤️"                                         // Text for the next button
+        batata: {
+            text: "Are you a Batata?",
+            yesBtn: "Yes",
+            noBtn: "No",
+            secretAnswer: "I am YOUR Batata! 💝"
         },
-        third: {
-            text: "Will you be my Valentine on February 14th, 2026? 🌹", // The big question!
-            yesBtn: "Yes!",                                             // Text for "Yes" button
-            noBtn: "No"                                                 // Text for "No" button
+        loveMeter: {
+            text: "How much do you love me?",
+            startText: "This much!",
+            nextBtn: "Next 💝"
+        },
+        final: {
+            text: "Will you be my Valentine on February 14th, 2026? 🌹",
+            yesBtn: "Yes! 💕",
+            noBtn: "No"
         }
     },
 
+    // NEW FEATURE: 8 Reasons Why I Love You
+    reasonsWhyILoveYou: [
+        {
+            id: 1,
+            reason: "Your beautiful eyes that shimmer like a moonlit river",
+            image: "cat2" // Blue cat with flowers
+        },
+        {
+            id: 2,
+            reason: "The way you light up when you talk about stuff you like",
+            image: "cat4" // Gradient cat
+        },
+        {
+            id: 3,
+            reason: "How you make me feel understood even when I'm being difficult",
+            image: "cat1" // Pink cat
+        },
+        {
+            id: 4,
+            reason: "Your beautiful soul that never fails to give me hope",
+            image: "cat2" // Blue cat with flowers
+        },
+        {
+            id: 5,
+            reason: "The way you always try to make time for me",
+            image: "cat3" // Blue cat with mustache
+        },
+        {
+            id: 6,
+            reason: "How talented you are, my artist, poet, and engineer",
+            image: "cat4" // Gradient cat
+        },
+        {
+            id: 7,
+            reason: "Your humor that fixes my soul",
+            image: "cat3" // Blue cat with mustache
+        },
+        {
+            id: 8,
+            reason: "Every moment with you feels like home",
+            image: "cat1" // Pink cat
+        }
+    ],
+
+    // NEW FEATURE: Love Letter (hover to reveal)
+    loveLetter: {
+        title: "A Letter For You 💌",
+        instruction: "Hover over the words to reveal my message...",
+        content: [
+            "My dearest Krystell,",
+            "From the moment I met you, my world became brighter and full of color.",
+            "Your smile lights up my darkest days and your presence makes everything better.",
+            "Your laugh is my favorite melody, a sound I never want to stop hearing.",
+            "Every moment with you feels like a dream I never want to wake up from.",
+            "You understand me in ways no one else can, and you love me even when I'm difficult.",
+            "You are my best friend, my partner, my muse, and my everything.",
+            "Your talent amazes me - my beautiful artist, poet, and engineer.",
+            "I fall more in love with you every single day, discovering new reasons to adore you.",
+            "You are my home, my safe place, my forever.",
+            "Thank you for choosing me, for loving me, for being you.",
+            "Forever and always yours,",
+            "Your love 💝"
+        ]
+    },
+
     // Love meter messages
-    // They show up depending on how far they slide the meter
     loveMessages: {
-        extreme: "WOOOOW You love me that much?? 🥰🚀💝",  // Shows when they go past 5000%
-        high: "To infinity and beyond! 🚀💝",              // Shows when they go past 1000%
-        normal: "And beyond! 🥰"                           // Shows when they go past 100%
+        extreme: "WOOOOW You love me THAT much?? 🥰✨💝",
+        high: "To infinity and beyond! 🚀💕",
+        normal: "And beyond! 💗"
     },
 
-    // Messages that appear after they say "Yes!"
+    // Celebration after "Yes!"
     celebration: {
-        title: "Yay! I'm the luckiest person in the world! 🎉💝💖💝💓",
-        message: "Now come get your gift, a big warm hug and a huge kiss!",
-        emojis: "🎁💖🤗💝💋❤️💕"  // These will bounce around
+        title: "Yay! I'm the luckiest person in the world! 🎉💝",
+        message: "Now come get your gift: a big warm hug and a huge kiss! 😘",
+        emojis: "💝💕💗💖✨🌸"
     },
 
-    // Color scheme for the website
-    // Use https://colorhunt.co or https://coolors.co to find beautiful color combinations
+    // SOFT ROMANTIC PINK COLOR SCHEME (Minimalist)
     colors: {
-        backgroundStart: "#ffafbd",      // Gradient start (try pastel colors for a soft look)
-        backgroundEnd: "#ffc3a0",        // Gradient end (should complement backgroundStart)
-        buttonBackground: "#ff6b6b",     // Button color (should stand out against the background)
-        buttonHover: "#ff8787",          // Button hover color (slightly lighter than buttonBackground)
-        textColor: "#ff4757"             // Text color (make sure it's readable!)
+        backgroundStart: "#FFF0F5",      // Lavender blush (very soft pink)
+        backgroundEnd: "#FFE4E9",        // Misty rose (gentle pink)
+        buttonBackground: "#FFB6C1",     // Light pink
+        buttonHover: "#FF69B4",          // Hot pink (for hover)
+        textColor: "#D84B6C",            // Soft berry pink
+        accentColor: "#FFC0CB",          // Classic pink
+        cardBackground: "#FFFFFF",       // Pure white for cards
+        cardShadow: "rgba(255, 182, 193, 0.3)" // Soft pink shadow
     },
 
-    // Animation settings
-    // Adjust these if you want faster/slower animations
+    // Animation settings (smooth and elegant)
     animations: {
-        floatDuration: "15s",           // How long it takes hearts to float up (10-20s recommended)
-        floatDistance: "50px",          // How far hearts move sideways (30-70px recommended)
-        bounceSpeed: "0.5s",            // Speed of bouncing animations (0.3-0.7s recommended)
-        heartExplosionSize: 1.5         // Size of heart explosion effect (1.2-2.0 recommended)
+        floatDuration: "20s",            // Slower, more elegant
+        floatDistance: "30px",           // Subtle movement
+        bounceSpeed: "0.6s",             // Gentle bounce
+        heartExplosionSize: 1.3,         // Subtle explosion
+        cardFlipSpeed: "0.6s",           // Smooth card flip
+        hoverRevealSpeed: "0.8s"         // Gentle text reveal
     },
 
-    // Background Music (Optional)
-    // Add your own music URL after getting proper licenses
-    music: {
-        enabled: true,                     // Music feature is enabled
-        autoplay: true,                    // Try to autoplay (note: some browsers may block this)
-        musicUrl: "https://res.cloudinary.com/dncywqfpb/video/upload/v1738399057/music_qrhjvy.mp3", // Music streaming URL
-        startText: "🎵 Play Music",        // Button text to start music
-        stopText: "🔇 Stop Music",         // Button text to stop music
-        volume: 0.5                        // Volume level (0.0 to 1.0)
-    }
+
 };
 
-// Don't modify anything below this line unless you know what you're doing
-window.VALENTINE_CONFIG = CONFIG; 
+// Don't modify below this line
+window.VALENTINE_CONFIG = CONFIG;

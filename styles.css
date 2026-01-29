@@ -1,17 +1,32 @@
+/* ============================================
+   💝 SOFT ROMANTIC PINK MINIMALIST THEME 💝
+   ============================================ */
+
 /* CSS Variables - Will be updated by JavaScript */
 :root {
     /* Colors */
-    --background-color-1: #ffafbd;
-    --background-color-2: #ffc3a0;
-    --button-color: #ff6b6b;
-    --button-hover: #ff8787;
-    --text-color: #ff4757;
+    --background-color-1: #FFF0F5;
+    --background-color-2: #FFE4E9;
+    --button-color: #FFB6C1;
+    --button-hover: #FF69B4;
+    --text-color: #D84B6C;
+    --accent-color: #FFC0CB;
+    --card-background: #FFFFFF;
+    --card-shadow: rgba(255, 182, 193, 0.3);
 
     /* Animations */
-    --float-duration: 15s;
-    --float-distance: 50px;
-    --bounce-speed: 0.5s;
-    --heart-explosion-size: 1.5;
+    --float-duration: 20s;
+    --float-distance: 30px;
+    --bounce-speed: 0.6s;
+    --heart-explosion-size: 1.3;
+    --card-flip-speed: 0.6s;
+    --hover-reveal-speed: 0.8s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -21,20 +36,27 @@ body {
     justify-content: center;
     align-items: center;
     background: linear-gradient(135deg, var(--background-color-1), var(--background-color-2));
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
+    padding: 20px;
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    background: var(--card-background);
+    padding: 3rem 2rem;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px var(--card-shadow);
     text-align: center;
-    max-width: 600px;
+    max-width: 800px;
+    width: 100%;
     margin: 20px;
-    overflow: visible !important;
+    position: relative;
+    z-index: 10;
 }
+
+/* ============================================
+   FLOATING ELEMENTS
+   ============================================ */
 
 .floating-elements {
     position: fixed;
@@ -42,72 +64,270 @@ body {
     height: 100%;
     pointer-events: none;
     z-index: 1;
+    top: 0;
+    left: 0;
 }
 
-.heart, .bear {
+.heart {
     position: absolute;
-    font-size: 2rem;
+    font-size: 1.5rem;
+    opacity: 0.6;
     animation: float var(--float-duration) linear infinite;
 }
 
 @keyframes float {
     0% {
-        transform: translateY(100vh) translateX(0);
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
     }
     100% {
-        transform: translateY(-100px) translateX(var(--float-distance));
+        transform: translateY(-100px) translateX(var(--float-distance)) rotate(360deg);
+        opacity: 0;
     }
 }
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.main-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
 
 .cute-btn {
     background: var(--button-color);
     border: none;
-    padding: 10px 20px;
+    padding: 15px 35px;
     margin: 10px;
-    border-radius: 20px;
+    border-radius: 50px;
     color: white;
     font-size: 1.1rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--card-shadow);
+    font-family: 'Poppins', sans-serif;
 }
 
 .cute-btn:hover {
-    transform: scale(1.1);
+    transform: translateY(-3px);
     background: var(--button-hover);
+    box-shadow: 0 6px 20px var(--card-shadow);
+}
+
+.cute-btn:active {
+    transform: translateY(-1px);
+}
+
+/* ============================================
+   SECTIONS & NAVIGATION
+   ============================================ */
+
+.section {
+    display: none;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
-.disabled-btn {
+/* ============================================
+   COUNTDOWN TIMER
+   ============================================ */
+
+.countdown-container {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.1), rgba(255, 192, 203, 0.1));
+    border-radius: 20px;
+}
+
+.countdown-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.countdown-display {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--card-shadow);
+    min-width: 80px;
+}
+
+.countdown-number {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+.countdown-label {
+    font-size: 0.9rem;
+    color: var(--text-color);
     opacity: 0.7;
-    cursor: not-allowed;
-    pointer-events: none;
+    margin-top: 5px;
+    font-weight: 300;
 }
 
-.secret-answer {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    margin-top: 0;
-    opacity: 0.2;
-    transition: opacity 0.3s;
-    transform: scale(0.7);
-    z-index: 2;
-    animation: subtle-hint 2s infinite alternate;
-    animation-delay: 5s;
+.countdown-message {
+    font-size: 1rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    font-style: italic;
+    margin-top: 1rem;
 }
 
-.secret-answer .cute-btn {
-    font-size: 0.8rem;
-    padding: 5px 10px;
+/* ============================================
+   REASONS WHY I LOVE YOU - FLIP CARDS
+   ============================================ */
+
+.reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 2rem 0;
+    perspective: 1000px;
 }
 
-.secret-answer:hover {
-    opacity: 1;
-    animation: none;
+.reason-card {
+    position: relative;
+    height: 300px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform var(--card-flip-speed) ease;
 }
+
+.reason-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: 0 8px 25px var(--card-shadow);
+}
+
+.card-front {
+    background: linear-gradient(135deg, var(--button-color), var(--accent-color));
+    color: white;
+}
+
+.card-front .card-number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
+}
+
+.card-front .card-prompt {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.card-back {
+    background: white;
+    transform: rotateY(180deg);
+}
+
+.card-back .cat-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 4px 8px var(--card-shadow));
+}
+
+.card-back .reason-text {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    font-weight: 400;
+    text-align: center;
+}
+
+/* ============================================
+   LOVE METER
+   ============================================ */
 
 .love-meter {
     position: relative;
@@ -131,95 +351,63 @@ body {
 .slider {
     width: 100%;
     height: 25px;
-    background: linear-gradient(to right, #ff6b6b, #ff8787, #ffb8b8);
+    background: linear-gradient(to right, var(--button-color), var(--button-hover), var(--accent-color));
     -webkit-appearance: none;
     appearance: none;
     outline: none;
     position: relative;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+    box-shadow: 0 4px 15px var(--card-shadow);
     transition: all 0.3s ease;
 }
 
 .slider:hover {
     transform: scale(1.02);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 6px 20px var(--card-shadow);
 }
 
-/* Ensure track is visible */
-.slider::-webkit-slider-runnable-track,
-.slider::-moz-range-track {
-    width: 100%;
-    height: 25px;
-    background: linear-gradient(to right, #ff6b6b, #ff8787, #ffb8b8);
-    border-radius: 15px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-}
-
-/* Ensure thumb is properly styled */
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 35px;
     height: 35px;
-    background: linear-gradient(135deg, #ff4757, #ff6b6b);
+    background: linear-gradient(135deg, var(--button-hover), var(--button-color));
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(255, 71, 87, 0.3);
-    position: relative;
-    z-index: 10;
-    margin-top: -5px;
+    box-shadow: 0 2px 10px var(--card-shadow);
     border: 3px solid white;
     transition: all 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+    transform: scale(1.15);
 }
 
 .slider::-moz-range-thumb {
     width: 35px;
     height: 35px;
-    background: linear-gradient(135deg, #ff4757, #ff6b6b);
+    background: linear-gradient(135deg, var(--button-hover), var(--button-color));
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(255, 71, 87, 0.3);
-    position: relative;
-    z-index: 10;
+    box-shadow: 0 2px 10px var(--card-shadow);
     border: 3px solid white;
     transition: all 0.2s ease;
 }
 
-.slider::-moz-range-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
-}
-
 #extraLove {
-    color: #ff6b6b;
+    color: var(--text-color);
     font-weight: bold;
-    animation: bounce 0.5s infinite alternate;
+    animation: bounce var(--bounce-speed) infinite alternate;
     display: block;
-    padding: 5px 10px;
-    border-radius: 10px;
-    background: rgba(255, 107, 107, 0.1);
-    text-shadow: 0 2px 4px rgba(255, 71, 87, 0.2);
-    transition: all 0.3s ease;
-    margin-top: 5px;
-}
-
-#extraLove.super-love {
-    background: rgba(255, 107, 107, 0.2);
-    font-size: 1.2em;
-    padding: 8px 15px;
-    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.2);
+    padding: 10px 20px;
+    border-radius: 15px;
+    background: rgba(255, 182, 193, 0.2);
+    margin-top: 10px;
 }
 
 #loveValue {
-    font-weight: bold;
-    color: #ff4757;
-    font-size: 1.3em;
-    transition: all 0.3s ease;
+    font-weight: 700;
+    color: var(--text-color);
+    font-size: 1.4em;
 }
 
 .love-value-container {
@@ -229,69 +417,143 @@ body {
 }
 
 @keyframes bounce {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.2);
-    }
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
 }
 
-.hearts-explosion {
-    font-size: 2rem;
-    animation: explode 1s ease-out forwards;
-    margin-top: 30px;
+/* ============================================
+   LOVE LETTER - HOVER TO REVEAL
+   ============================================ */
+
+.love-letter-container {
+    background: linear-gradient(135deg, rgba(255, 240, 245, 0.5), rgba(255, 228, 233, 0.5));
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 600px;
+    margin: 2rem auto;
+    line-height: 2;
+    font-size: 1.1rem;
 }
 
-@keyframes explode {
-    0% {
-        transform: scale(0);
-    }
-    50% {
-        transform: scale(var(--heart-explosion-size));
-    }
-    100% {
-        transform: scale(1);
-    }
+.letter-line {
+    display: block;
+    margin: 10px 0;
+    transition: all var(--hover-reveal-speed) ease;
+    position: relative;
+    font-family: 'Playfair Display', serif;
 }
 
-h1, h2 {
-    font-family: Arial, sans-serif;
-    font-weight: 700;
-}
-
-h1 {
-    color: #ff6b6b;
-    margin-bottom: 2rem;
-}
-
-h2 {
-    color: #ff8787;
-}
-
-.super-love {
-    font-size: 1.5em;
-    color: #ff4757;
-    font-weight: bold;
-    transform: scale(1.2);
+.letter-line .word {
     display: inline-block;
-    text-shadow: 2px 2px 4px rgba(255, 71, 87, 0.3);
+    color: transparent;
+    background: linear-gradient(90deg, var(--button-color), var(--accent-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    opacity: 0.3;
+    transition: all 0.3s ease;
+    padding: 2px 4px;
+    cursor: default;
 }
 
+.letter-line .word:hover {
+    opacity: 1;
+    color: var(--text-color);
+    background: none;
+    transform: scale(1.05);
+}
 
-.celebration-text {
-    font-size: 3em;
-    color: #ff4757;
-    font-weight: bold;
-    margin: 30px 0;
-    animation: bounce var(--bounce-speed) infinite alternate;
-    text-shadow: 2px 2px 4px rgba(255, 71, 87, 0.3);
+.letter-line .word.revealed {
+    opacity: 1;
+    color: var(--text-color);
+    background: none;
+}
+
+/* ============================================
+   SECRET ANSWER
+   ============================================ */
+
+.secret-answer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+    animation: subtle-hint 2s infinite alternate;
+    animation-delay: 5s;
+}
+
+.secret-answer:hover {
+    opacity: 1;
+    animation: none;
+}
+
+.secret-answer .cute-btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
 }
 
 @keyframes subtle-hint {
     0% { opacity: 0.2; }
-    100% { opacity: 0.3; }
+    100% { opacity: 0.35; }
 }
+
+/* ============================================
+   CELEBRATION
+   ============================================ */
+
+.celebration-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    animation: bounce var(--bounce-speed) infinite alternate;
+}
+
+.celebration-cats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+.celebration-cat {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    animation: bounce 0.8s infinite alternate;
+    filter: drop-shadow(0 4px 8px var(--card-shadow));
+}
+
+.celebration-cat:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.celebration-cat:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.celebration-cat:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.celebration-text {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin: 20px 0;
+    font-weight: 500;
+}
+
+.celebration-emojis {
+    font-size: 2.5rem;
+    margin: 20px 0;
+    animation: bounce var(--bounce-speed) infinite alternate;
+}
+
+/* ============================================
+   MUSIC CONTROLS
+   ============================================ */
 
 .music-controls {
     position: fixed;
@@ -301,18 +563,94 @@ h2 {
 }
 
 .music-btn {
-    background: var(--primary-color);
+    background: var(--button-color);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 12px 24px;
+    border-radius: 50px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 500;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px var(--card-shadow);
+    font-family: 'Poppins', sans-serif;
 }
 
 .music-btn:hover {
-    transform: scale(1.05);
-    background: var(--secondary-color);
-} 
+    transform: translateY(-2px);
+    background: var(--button-hover);
+    box-shadow: 0 6px 20px var(--card-shadow);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .question-text {
+        font-size: 1.4rem;
+    }
+    
+    .countdown-number {
+        font-size: 2rem;
+    }
+    
+    .countdown-item {
+        min-width: 60px;
+        padding: 10px 15px;
+    }
+    
+    .reasons-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 2rem 1.5rem;
+    }
+    
+    .cute-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    
+    .celebration-cat {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-display {
+        gap: 10px;
+    }
+    
+    .countdown-item {
+        min-width: 50px;
+        padding: 8px 12px;
+    }
+    
+    .countdown-number {
+        font-size: 1.5rem;
+    }
+    
+    .reason-card {
+        height: 250px;
+    }
+    
+    .love-letter-container {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+}

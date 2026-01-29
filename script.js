@@ -1,64 +1,33 @@
+// ============================================
+// 💝 KHADIJA'S VALENTINE WEBSITE - SCRIPT 💝
+// ============================================
+
 // Initialize configuration
 const config = window.VALENTINE_CONFIG;
-
-// Validate configuration
-function validateConfig() {
-    const warnings = [];
-
-    // Check required fields
-    if (!config.valentineName) {
-        warnings.push("Valentine's name is not set! Using default.");
-        config.valentineName = "My Love";
-    }
-
-    // Validate colors
-    const isValidHex = (hex) => /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex);
-    Object.entries(config.colors).forEach(([key, value]) => {
-        if (!isValidHex(value)) {
-            warnings.push(`Invalid color for ${key}! Using default.`);
-            config.colors[key] = getDefaultColor(key);
-        }
-    });
-
-    // Validate animation values
-    if (parseFloat(config.animations.floatDuration) < 5) {
-        warnings.push("Float duration too short! Setting to 5s minimum.");
-        config.animations.floatDuration = "5s";
-    }
-
-    if (config.animations.heartExplosionSize < 1 || config.animations.heartExplosionSize > 3) {
-        warnings.push("Heart explosion size should be between 1 and 3! Using default.");
-        config.animations.heartExplosionSize = 1.5;
-    }
-
-    // Log warnings if any
-    if (warnings.length > 0) {
-        console.warn("⚠️ Configuration Warnings:");
-        warnings.forEach(warning => console.warn("- " + warning));
-    }
-}
-
-// Default color values
-function getDefaultColor(key) {
-    const defaults = {
-        backgroundStart: "#ffafbd",
-        backgroundEnd: "#ffc3a0",
-        buttonBackground: "#ff6b6b",
-        buttonHover: "#ff8787",
-        textColor: "#ff4757"
-    };
-    return defaults[key];
-}
 
 // Set page title
 document.title = config.pageTitle;
 
-// Initialize the page content when DOM is loaded
-window.addEventListener('DOMContentLoaded', () => {
-    // Validate configuration first
-    validateConfig();
+// ============================================
+// INITIALIZATION
+// ============================================
 
-    // Set texts from config
+window.addEventListener('DOMContentLoaded', () => {
+    initializePage();
+    setupCountdown();
+    setupMusicPlayer();
+    createFloatingElements();
+    generateReasonCards();
+    generateLoveLetter();
+    setupLoveMeter();
+});
+
+// ============================================
+// PAGE INITIALIZATION
+// ============================================
+
+function initializePage() {
+    // Set main title
     document.getElementById('valentineTitle').textContent = `${config.valentineName}, my love...`;
     
     // Set first question texts
@@ -67,165 +36,342 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('noBtn1').textContent = config.questions.first.noBtn;
     document.getElementById('secretAnswerBtn').textContent = config.questions.first.secretAnswer;
     
-    // Set second question texts
-    document.getElementById('question2Text').textContent = config.questions.second.text;
-    document.getElementById('startText').textContent = config.questions.second.startText;
-    document.getElementById('nextBtn').textContent = config.questions.second.nextBtn;
+    // Set Batata question texts
+    document.getElementById('batataText').textContent = config.questions.batata.text;
+    document.getElementById('yesBtnBatata').textContent = config.questions.batata.yesBtn;
+    document.getElementById('noBtnBatata').textContent = config.questions.batata.noBtn;
+    document.getElementById('secretAnswerBatata').textContent = config.questions.batata.secretAnswer;
     
-    // Set third question texts
-    document.getElementById('question3Text').textContent = config.questions.third.text;
-    document.getElementById('yesBtn3').textContent = config.questions.third.yesBtn;
-    document.getElementById('noBtn3').textContent = config.questions.third.noBtn;
+    // Set love meter question texts
+    document.getElementById('question2Text').textContent = config.questions.loveMeter.text;
+    document.getElementById('startText').textContent = config.questions.loveMeter.startText;
+    document.getElementById('nextBtn').textContent = config.questions.loveMeter.nextBtn;
+    
+    // Set final question texts
+    document.getElementById('question3Text').textContent = config.questions.final.text;
+    document.getElementById('yesBtn3').textContent = config.questions.final.yesBtn;
+    document.getElementById('noBtn3').textContent = config.questions.final.noBtn;
 
-    // Create initial floating elements
-    createFloatingElements();
+    // Show landing page first
+    showSection('landing');
+}
 
-    // Setup music player
-    setupMusicPlayer();
-});
+// ============================================
+// SECTION NAVIGATION
+// ============================================
 
-// Create floating hearts and bears
+function showSection(sectionId) {
+    // Hide all sections
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show requested section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        
+        // Scroll to top smoothly
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// ============================================
+// COUNTDOWN TIMER
+// ============================================
+
+function setupCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    
+    // Check if countdown exists and is enabled
+    if (!config.countdown || !config.countdown.enabled || !countdownElement) {
+        if (countdownElement) {
+            countdownElement.style.display = 'none';
+        }
+        return;
+    }
+
+    const countdownTitle = document.getElementById('countdownTitle');
+    const countdownMessage = document.getElementById('countdownMessage');
+    
+    countdownTitle.textContent = config.countdown.title;
+    countdownMessage.textContent = config.countdown.message;
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+function updateCountdown() {
+    const targetDate = new Date(config.countdown.targetDate).getTime();
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if (distance < 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days').textContent = String(days).padStart(2, '0');
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+}
+
+// ============================================
+// FLOATING ELEMENTS
+// ============================================
+
 function createFloatingElements() {
     const container = document.querySelector('.floating-elements');
     
     // Create hearts
-    config.floatingEmojis.hearts.forEach(heart => {
-        const div = document.createElement('div');
-        div.className = 'heart';
-        div.innerHTML = heart;
-        setRandomPosition(div);
-        container.appendChild(div);
-    });
-
-    // Create bears
-    config.floatingEmojis.bears.forEach(bear => {
-        const div = document.createElement('div');
-        div.className = 'bear';
-        div.innerHTML = bear;
-        setRandomPosition(div);
-        container.appendChild(div);
+    config.floatingEmojis.hearts.forEach((heart, index) => {
+        for (let i = 0; i < 5; i++) {
+            const div = document.createElement('div');
+            div.className = 'heart';
+            div.innerHTML = heart;
+            setRandomPosition(div);
+            container.appendChild(div);
+        }
     });
 }
 
-// Set random position for floating elements
 function setRandomPosition(element) {
     element.style.left = Math.random() * 100 + 'vw';
     element.style.animationDelay = Math.random() * 5 + 's';
-    element.style.animationDuration = 10 + Math.random() * 20 + 's';
+    element.style.animationDuration = 15 + Math.random() * 10 + 's';
 }
 
-// Function to show next question
-function showNextQuestion(questionNumber) {
-    document.querySelectorAll('.question-section').forEach(q => q.classList.add('hidden'));
-    document.getElementById(`question${questionNumber}`).classList.remove('hidden');
+// ============================================
+// REASONS WHY I LOVE YOU - FLIP CARDS
+// ============================================
+
+function generateReasonCards() {
+    const reasonsGrid = document.getElementById('reasonsGrid');
+    
+    // Check if reasons exist in config
+    if (!config.reasonsWhyILoveYou || config.reasonsWhyILoveYou.length === 0) {
+        console.error('reasonsWhyILoveYou not found in config');
+        return;
+    }
+    
+    config.reasonsWhyILoveYou.forEach((reasonObj) => {
+        const card = document.createElement('div');
+        card.className = 'reason-card';
+        card.onclick = () => flipCard(card);
+        
+        // Get image path
+        const imageName = config.images[reasonObj.image];
+        console.log('Loading image:', imageName, 'for reason', reasonObj.id);
+        
+        card.innerHTML = `
+            <div class="card-front">
+                <div class="card-number">${reasonObj.id}</div>
+                <div class="card-prompt">Click to reveal 💝</div>
+            </div>
+            <div class="card-back">
+                <img src="${imageName}" alt="Cute cat" class="cat-image" onerror="console.error('Failed to load image: ${imageName}')">
+                <p class="reason-text">${reasonObj.reason}</p>
+            </div>
+        `;
+        
+        reasonsGrid.appendChild(card);
+    });
 }
 
-// Function to move the "No" button when clicked
+function flipCard(card) {
+    card.classList.toggle('flipped');
+}
+
+// ============================================
+// LOVE LETTER - HOVER TO REVEAL
+// ============================================
+
+function generateLoveLetter() {
+    const letterContainer = document.getElementById('loveLetterContent');
+    const title = document.getElementById('loveLetterTitle');
+    const instruction = document.getElementById('loveLetterInstruction');
+    
+    // Check if love letter exists in config
+    if (!config.loveLetter || !config.loveLetter.content) {
+        console.error('loveLetter not found in config');
+        return;
+    }
+    
+    title.textContent = config.loveLetter.title;
+    instruction.textContent = config.loveLetter.instruction;
+    
+    config.loveLetter.content.forEach((line) => {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'letter-line';
+        
+        // Split line into words
+        const words = line.split(' ');
+        words.forEach((word, index) => {
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'word';
+            wordSpan.textContent = word;
+            
+            // Add hover event to reveal
+            wordSpan.addEventListener('mouseenter', () => {
+                wordSpan.classList.add('revealed');
+            });
+            
+            lineDiv.appendChild(wordSpan);
+            
+            // Add space between words (except last word)
+            if (index < words.length - 1) {
+                lineDiv.appendChild(document.createTextNode(' '));
+            }
+        });
+        
+        letterContainer.appendChild(lineDiv);
+    });
+}
+
+// ============================================
+// LOVE METER
+// ============================================
+
+function setupLoveMeter() {
+    const loveMeter = document.getElementById('loveMeter');
+    const loveValue = document.getElementById('loveValue');
+    const extraLove = document.getElementById('extraLove');
+
+    // Set initial value
+    loveMeter.value = 100;
+    loveValue.textContent = 100;
+
+    loveMeter.addEventListener('input', () => {
+        const value = parseInt(loveMeter.value);
+        loveValue.textContent = value;
+        
+        if (value > 100) {
+            extraLove.classList.remove('hidden');
+            const overflowPercentage = (value - 100) / 9900;
+            const extraWidth = overflowPercentage * window.innerWidth * 0.8;
+            loveMeter.style.width = `calc(100% + ${extraWidth}px)`;
+            loveMeter.style.transition = 'width 0.3s';
+            
+            // Show different messages based on value
+            if (value >= 5000) {
+                extraLove.textContent = config.loveMessages.extreme;
+            } else if (value > 1000) {
+                extraLove.textContent = config.loveMessages.high;
+            } else {
+                extraLove.textContent = config.loveMessages.normal;
+            }
+        } else {
+            extraLove.classList.add('hidden');
+            loveMeter.style.width = '100%';
+        }
+    });
+}
+
+// ============================================
+// BUTTON INTERACTIONS
+// ============================================
+
 function moveButton(button) {
-    const x = Math.random() * (window.innerWidth - button.offsetWidth);
-    const y = Math.random() * (window.innerHeight - button.offsetHeight);
+    const maxX = window.innerWidth - button.offsetWidth - 20;
+    const maxY = window.innerHeight - button.offsetHeight - 20;
+    
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    
     button.style.position = 'fixed';
     button.style.left = x + 'px';
     button.style.top = y + 'px';
+    button.style.transition = 'all 0.3s ease';
 }
 
-// Love meter functionality
-const loveMeter = document.getElementById('loveMeter');
-const loveValue = document.getElementById('loveValue');
-const extraLove = document.getElementById('extraLove');
+// ============================================
+// CELEBRATION
+// ============================================
 
-function setInitialPosition() {
-    loveMeter.value = 100;
-    loveValue.textContent = 100;
-    loveMeter.style.width = '100%';
-}
-
-loveMeter.addEventListener('input', () => {
-    const value = parseInt(loveMeter.value);
-    loveValue.textContent = value;
-    
-    if (value > 100) {
-        extraLove.classList.remove('hidden');
-        const overflowPercentage = (value - 100) / 9900;
-        const extraWidth = overflowPercentage * window.innerWidth * 0.8;
-        loveMeter.style.width = `calc(100% + ${extraWidth}px)`;
-        loveMeter.style.transition = 'width 0.3s';
-        
-        // Show different messages based on the value
-        if (value >= 5000) {
-            extraLove.classList.add('super-love');
-            extraLove.textContent = config.loveMessages.extreme;
-        } else if (value > 1000) {
-            extraLove.classList.remove('super-love');
-            extraLove.textContent = config.loveMessages.high;
-        } else {
-            extraLove.classList.remove('super-love');
-            extraLove.textContent = config.loveMessages.normal;
-        }
-    } else {
-        extraLove.classList.add('hidden');
-        extraLove.classList.remove('super-love');
-        loveMeter.style.width = '100%';
-    }
-});
-
-// Initialize love meter
-window.addEventListener('DOMContentLoaded', setInitialPosition);
-window.addEventListener('load', setInitialPosition);
-
-// Celebration function
 function celebrate() {
-    document.querySelectorAll('.question-section').forEach(q => q.classList.add('hidden'));
-    const celebration = document.getElementById('celebration');
-    celebration.classList.remove('hidden');
+    showSection('celebration');
     
     // Set celebration messages
     document.getElementById('celebrationTitle').textContent = config.celebration.title;
     document.getElementById('celebrationMessage').textContent = config.celebration.message;
     document.getElementById('celebrationEmojis').textContent = config.celebration.emojis;
     
-    // Create heart explosion effect
+    // Add cat images to celebration
+    const catsContainer = document.getElementById('celebrationCats');
+    catsContainer.innerHTML = '';
+    
+    Object.values(config.images).forEach((imageName) => {
+        const img = document.createElement('img');
+        img.src = imageName;
+        img.className = 'celebration-cat';
+        img.alt = 'Cute cat';
+        img.onerror = function() {
+            console.error('Failed to load celebration image:', imageName);
+            this.style.display = 'none';
+        };
+        catsContainer.appendChild(img);
+    });
+    
+    // Create heart explosion
     createHeartExplosion();
 }
 
-// Create heart explosion animation
 function createHeartExplosion() {
+    const container = document.querySelector('.floating-elements');
+    
     for (let i = 0; i < 50; i++) {
         const heart = document.createElement('div');
         const randomHeart = config.floatingEmojis.hearts[Math.floor(Math.random() * config.floatingEmojis.hearts.length)];
         heart.innerHTML = randomHeart;
         heart.className = 'heart';
-        document.querySelector('.floating-elements').appendChild(heart);
         setRandomPosition(heart);
+        container.appendChild(heart);
     }
 }
 
-// Music Player Setup
+// ============================================
+// MUSIC PLAYER
+// ============================================
+
 function setupMusicPlayer() {
     const musicControls = document.getElementById('musicControls');
     const musicToggle = document.getElementById('musicToggle');
     const bgMusic = document.getElementById('bgMusic');
     const musicSource = document.getElementById('musicSource');
 
-    // Only show controls if music is enabled in config
-    if (!config.music.enabled) {
+    // Check if music config exists
+    if (!config.music || !config.music.enabled) {
         musicControls.style.display = 'none';
         return;
     }
 
     // Set music source and volume
     musicSource.src = config.music.musicUrl;
-    bgMusic.volume = config.music.volume || 0.5;
+    bgMusic.volume = config.music.volume || 0.4;
     bgMusic.load();
 
     // Try autoplay if enabled
     if (config.music.autoplay) {
         const playPromise = bgMusic.play();
         if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Autoplay prevented by browser");
-                musicToggle.textContent = config.music.startText;
-            });
+            playPromise
+                .then(() => {
+                    musicToggle.textContent = config.music.stopText;
+                })
+                .catch(error => {
+                    console.log("Autoplay prevented by browser");
+                    musicToggle.textContent = config.music.startText;
+                });
         }
     }
 
@@ -239,4 +385,4 @@ function setupMusicPlayer() {
             musicToggle.textContent = config.music.startText;
         }
     });
-} 
+}
